@@ -143,7 +143,21 @@ runRobot(VillageState.random(),routeRobot,[]);
   
   compareRobots(routeRobot, [], goalOrientedRobot, []);
   // Robot efficiency 
-  
+  function compareRobots(robots, iterations = 100) {
+    for (let i = 0; i < iterations; i++) {
+      let state = VillageState.random();
+      for (let robot of robots) {
+        if ('results' in robot === false) {
+          robot.results = [];
+        }
+        robot.results.push(runRobot(state, robot.robot, []));
+      }
+    }
+    for (let robot of robots) {
+      let turns = robot.results.reduce((a, c) => a + c, 0) / robot.results.length;
+      console.log(`${robot.name} completed in an average of ${turns} turns.`);
+    }
+  }
 
   // Persistent group
   class PGroup {
